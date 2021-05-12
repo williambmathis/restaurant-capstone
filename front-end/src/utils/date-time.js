@@ -25,7 +25,7 @@ function asDateString(date) {
  * @returns {*}
  *  the specified date string formatted as YYYY-MM-DD
  */
- function formatAsDate(dateString) {
+export function formatAsDate(dateString) {
   return dateString.match(dateFormat)[0];
 }
 
