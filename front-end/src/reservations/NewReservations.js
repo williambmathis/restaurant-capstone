@@ -1,83 +1,155 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import formatReservationDate from "../utils/format-reservation-date";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function NewReservation() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [reservationDate, setReservationDate] = useState("");
-  const [reservationTime, setReservationTime] = useState("");
-  const [partySize, setPartySize] = useState("");
+  const history = useHistory();
+  const [errors, setErrors] = useState([]);
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    mobile_number: "",
+    reservation_date: "",
+    reservation_time: "",
+    people: 0,
+  });
+
+  function validateDate() {
+    const reserveDate = new Date(`${formData.reservation_date}T${formData.reservation_time}:00.000`);
+
+    const todaysDate = new Date();
+
+    const foundErrors = [];
+
+    if (reserveDate < todaysDate) {
+      foundErrors.push({ message: "Reservations cannot be made in the past" });
+    }
+
+    if (reserveDate.getDay() === 2) {
+      foundErrors.push({
+        message:
+          "Reservations cannot be made on a Tuesday (Restaurant is closed).",
+      });
+    }
+
+    if(reserveDate.getHours() < 10 || (reserveDate.getHours() === 10 && reserveDate.getMinutes() < 30)){
+      foundErrors.push({message: "Reservation cannot be made: Restaurant is not open until 10:30AM"});
+    }
+
+    else if(reserveDate.getHours() > 22 || (reserveDate.getHours() === 22 && reserveDate.getMinutes() >= 30)){
+      foundErrors.push({message: "Reservations cannot be made: Restaurant is closed after 10:30PM."});
+    }
+
+    else if(reserveDate.getHours() > 21 || (reserveDate.getHours() === 21 && reserveDate.getMinutes() > 30)){
+      foundErrors.push({message: "Reservation cannot be made: Reservation must be made at least an hour before closing."})
+    }
+
+    setErrors(foundErrors);
+
+    if(foundErrors.length > 0){
+      return false;
+    }
+    return true;
+  }
 
   function handleSubmit(event) {
-      event.preventDefault();
-      if(partySize < 1){
-          alert("There should be at least one person")
-      }
+    event.preventDefault();
+    if (validateDate()) {
+      history.push(
+        `/dashboard?date=${formData.reservation_date}`
+      );
+    }
+  }
+
+
+  function handleChange({ target }) {
+    setFormData({ ...formData, [target.name]: target.value });
+  }
+
+  const errorsJSX = () => {
+    return errors.map((error, index) => <ErrorAlert key={index} error={error} />)
   }
 
   return (
     <main>
       <div>
-        <form onSubmit={handleSubmit}>
+        <form>
+          {errorsJSX()}
           <div>
+            <label htmlFor="first_name">First Name:&nbsp;</label>
             <input
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First name"
+              name="first_name"
+              id="first_name"
               type="text"
-              name="firstName"
+              onChange={handleChange}
+              value={formData.first_name}
+              placeholder="First name"
               required
             />
           </div>
           <div>
-              <input
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder = "Last name"
-              type = "text"
-              name="lastName"
+            <label htmlFor="last_name">Last Name:&nbsp;</label>
+            <input
+              name="last_name"
+              id="last_name"
+              type="text"
+              onChange={handleChange}
+              value={formData.last_name}
+              placeholder="Last name"
               required
-              />
+            />
           </div>
           <div>
-              <input
-              value={mobileNumber}
-              onChange={(e) => setMobileNumber(e.target.value)}
-              placeholder = "Mobile number"
-              type = "text"
-              name ="mobileNumber"
+            <label htmlFor="mobile_number">Mobile Number:&nbsp;</label>
+            <input
+              value={formData.mobile_number}
+              id="mobile_number"
+              onChange={handleChange}
+              type="tel"
+              name="mobile_number"
               required
-              />
+            />
           </div>
           <div>
-              <input
-              value={reservationDate}
-              onChange={(e) => setReservationDate(e.target.value)}
+            <label htmlFor="reservation_date">Reservation Date:&nbsp;</label>
+            <input
+              id="reservation_date"
+              value={formData.reservation_date}
+              onChange={handleChange}
               type="date"
-              name="reservationDate"
+              name="reservation_date"
               required
-              />
+            />
           </div>
           <div>
-              <input
-              value={reservationTime}
-              onChange={(e) => setReservationTime(e.target.value)}
+            <label htmlFor="reservation_time">Reservation Time:&nbsp;</label>
+            <input
+              id="reservation_time"
+              value={formData.reservation_time}
+              onChange={handleChange}
               type="time"
-              name="reservationTime"
+              name="reservation_time"
               required
-              />
+            />
           </div>
           <div>
-              <input 
-              value={partySize}
-              onChange={(e) => setPartySize(e.target.value)}
+            <label htmlFor="people">Number of people:&nbsp;</label>
+            <input
+              if="people"
+              value={formData.people}
+              onChange={handleChange}
               type="number"
-              name="partySize"
-              placeholder="1"
+              name="people"
               required
-              />
+            />
           </div>
-          <button type="submit">Submit</button>
+          <button type="submit" onClick={handleSubmit}>
+            Submit
+          </button>
+          <button type="button" onClick={history.goBack}>
+            Cancel
+          </button>
         </form>
       </div>
       hello there, this will one day house a new reservation form

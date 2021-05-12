@@ -81,11 +81,3 @@ export function previous(currentDate) {
   return asDateString(date);
 }
 
-
-module.exports ={
-  today,
-  formatAsDate,
-  formatAsTime,
-  next,
-  previous
-}
