@@ -36,7 +36,7 @@ export function formatAsDate(dateString) {
  * @returns {*}
  *  the specified time string formatted as YHH:MM.
  */
- function formatAsTime(timeString) {
+ export function formatAsTime(timeString) {
   return timeString.match(timeFormat)[0];
 }
 
@@ -45,7 +45,7 @@ export function formatAsDate(dateString) {
  * @returns {*}
  *  the today's date formatted as YYYY-MM-DD
  */
- function today() {
+export function today() {
   return asDateString(new Date());
 }
 
@@ -56,7 +56,7 @@ export function formatAsDate(dateString) {
  * @returns {*}
  *  the date one day prior to currentDate, formatted as YYYY-MM-DD
  */
-function previous(currentDate) {
+export function previous(currentDate) {
   let [ year, month, day ] = currentDate.split("-");
   month -= 1;
   const date = new Date(year, month, day);
@@ -72,7 +72,7 @@ function previous(currentDate) {
  * @returns {*}
  *  the date one day after currentDate, formatted as YYYY-MM-DD
  */
- function next(currentDate) {
+ export function next(currentDate) {
   let [ year, month, day ] = currentDate.split("-");
   month -= 1;
   const date = new Date(year, month, day);
