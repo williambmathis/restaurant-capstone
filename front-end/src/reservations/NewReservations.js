@@ -60,6 +60,10 @@ function NewReservation() {
         `/dashboard?date=${formData.reservation_date}`
       );
     }
+
+    if(formData.people < 1){
+      //fix later
+    }
   }
 
 
