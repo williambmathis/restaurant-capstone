@@ -20,7 +20,7 @@ function NewReservation() {
 
     const todaysDate = new Date();
 
-    const foundErrors = [];
+    
 
     if (reserveDate < todaysDate) {
       foundErrors.push({ message: "Reservations cannot be made in the past" });
@@ -54,8 +54,9 @@ function NewReservation() {
   }
 
   function handleSubmit(event) {
+    const foundErrors = [];
     event.preventDefault();
-    if (validateDate() && validateFields(foundErrors)) {
+    if (validateDate(foundErrors) && validateFields(foundErrors)) {
       history.push(
         `/dashboard?date=${formData.reservation_date}`
       );
