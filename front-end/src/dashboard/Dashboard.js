@@ -12,7 +12,7 @@ import TableRow from "./TableRow";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }) {
+function Dashboard({ date }, reservations, tables, reservationsError, tablesError ) {
   const history = useHistory();
 
  
