@@ -15,7 +15,7 @@ function NewReservation() {
     people: 0,
   });
 
-  function validateDate() {
+  function validateDate(foundErrors) {
     const reserveDate = new Date(`${formData.reservation_date}T${formData.reservation_time}:00.000`);
 
     const todaysDate = new Date();
