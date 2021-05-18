@@ -55,15 +55,30 @@ function NewReservation() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (validateDate()) {
+    if (validateDate() && validateFields(foundErrors)) {
       history.push(
         `/dashboard?date=${formData.reservation_date}`
       );
     }
+    setErrors(foundErrors);
+  }
 
-    if(formData.people < 1){
-      //fix later
+
+  function validateFields(foundErrors) {
+    for(const field in formData) {
+      if(formData[field] === "") {
+        foundErrors.push({ message: `${field.split("_").join(" ")} cannot be left blank.`})
+      }
     }
+  
+    if(formData.people <= 0) {
+      foundErrors.push({ message: "Party must be a size of at least 1." })
+    }
+  
+    if(foundErrors.length > 0) {
+      return false;
+    }
+    return true;
   }
 
 
