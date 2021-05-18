@@ -3,6 +3,8 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, today, next } from "../utils/date-time";
 import { useHistory } from "react-router-dom";
+import ReservationRow from "./ReservationRow";
+import TableRow from "./TableRow";
 
 /**
  * Defines the dashboard page.
@@ -27,6 +29,16 @@ function Dashboard({ date }) {
   }
   const reservationsJSON = JSON.stringify(reservations)
   
+  const reservationsJSX = () => {
+    return reservations.map((reservation) => 
+      <ReservationRow key={reservation.reservation_id} reservation={reservation} />)
+    
+  }
+  
+  const tablesJSX = () => {
+    return tables.map((table) => 
+      <TableRow key={table.table_id} table={table} />);
+  };
 
   return (
     
@@ -58,7 +70,7 @@ function Dashboard({ date }) {
 			
 			{ /* "tbody" is the table body. */ }
 			<tbody>
-				{ /* i am currently planning on creating a special component that will format the reservation information as a table row (<tr>) */ }
+				{reservationsJSX()}
 			</tbody>
 		</table>
       
@@ -78,7 +90,7 @@ function Dashboard({ date }) {
 			</thead>
 				
 			<tbody>
-				{ /* likewise to the other <tbody>, we will be making a new component that will format the table information. */ }
+				{tablesJSX()}
 			</tbody>
 		</table>
 		
