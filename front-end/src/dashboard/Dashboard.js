@@ -29,22 +29,64 @@ function Dashboard({ date }) {
   
 
   return (
+    
     <main>
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
-      </div>
-      <ErrorAlert error={reservationsError} />
-      <div>
-        
-      </div>
-      {reservationsJSON}
+		<h1>Dashboard</h1>
 
-      <button type="button" onClick={() => history.push(`/dashboard?date=${previous(date)}`)}>Previous</button>
-      <button type="button" onClick={() => history.push(`/dashboard?date=${today()}`)}>Today</button>
-      <button type="button" onClick={() => history.push(`/dashboard?date=${next(date)}`)}>Next</button>
+		<h4 className="mb-0">Reservations for {date}</h4>
+			
+		<ErrorAlert error={reservationsError} />
 
+		{ /* although i'm not caring too much right now about what the table looks like, i'm still utilizing some of the classes from Bootstrap to format it in a nice way. */ }
+		<table class="table">
+			{ /* "thead" is the table header, meant for the column labels */ }
+			<thead>
+				{ /* "tr" means table row */ }
+				<tr>
+					{// "th" is a table heading. they all have a scope="col", which is used primarily for Bootstrap. (it will basically <strong> it)
+}
+					<th scope="col">ID</th>
+					<th scope="col">First Name</th>
+					<th scope="col">Last Name</th>
+					<th scope="col">Mobile Number</th>
+					<th scope="col">Time</th>
+					<th scope="col">People</th>
+					<th scope="col">Status</th>
+					<th scope="col">Seat Table</th>
+				</tr>
+			</thead>
+			
+			{ /* "tbody" is the table body. */ }
+			<tbody>
+				{ /* i am currently planning on creating a special component that will format the reservation information as a table row (<tr>) */ }
+			</tbody>
+		</table>
+      
+      		{ /* using the same principles as the code up above, we can make a section for the tables as well: */ }
+		<h4 className="mb-0">Tables</h4>
+
+		<ErrorAlert error={tablesError} />
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Table Name</th>
+					<th scope="col">Capacity</th>
+					<th scope="col">Status</th>
+				</tr>
+			</thead>
+				
+			<tbody>
+				{ /* likewise to the other <tbody>, we will be making a new component that will format the table information. */ }
+			</tbody>
+		</table>
+		
+		<button type="button" onClick={() => history.push(`/dashboard?date=${previous(date)}`)}>Previous</button>
+		<button type="button" onClick={() => history.push(`/dashboard`)}>Today</button>
+		<button type="button" onClick={() => history.push(`/dashboard?date=${next(date)}`)}>Next</button>
     </main>
+    
   );
 }
 
