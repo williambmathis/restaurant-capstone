@@ -14,20 +14,8 @@ import TableRow from "./TableRow";
  */
 function Dashboard({ date }) {
   const history = useHistory();
-  const [reservations, setReservations] = useState([]);
-  const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(loadDashboard, [date]);
-
-  function loadDashboard() {
-    const abortController = new AbortController();
-    setReservationsError(null);
-    listReservations({ date }, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError);
-    return () => abortController.abort();
-  }
-  const reservationsJSON = JSON.stringify(reservations)
+ 
   
   const reservationsJSX = () => {
     return reservations.map((reservation) => 
