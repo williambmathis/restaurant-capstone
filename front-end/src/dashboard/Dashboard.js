@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+import React from "react";
 import ErrorAlert from "../layout/ErrorAlert";
-import { previous, today, next } from "../utils/date-time";
+import { previous, next } from "../utils/date-time";
 import { useHistory } from "react-router-dom";
 import ReservationRow from "./ReservationRow";
 import TableRow from "./TableRow";
@@ -12,7 +11,7 @@ import TableRow from "./TableRow";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }, reservations, tables, reservationsError, tablesError ) {
+function Dashboard({ date, reservations, tables, reservationsError, tablesError }) {
   const history = useHistory();
 
  
@@ -38,9 +37,9 @@ function Dashboard({ date }, reservations, tables, reservationsError, tablesErro
 		<ErrorAlert error={reservationsError} />
 
 		{ /* although i'm not caring too much right now about what the table looks like, i'm still utilizing some of the classes from Bootstrap to format it in a nice way. */ }
-		<table class="table">
+		<table className="table">
 			{ /* "thead" is the table header, meant for the column labels */ }
-			<thead>
+			<thead className="thead-light">
 				{ /* "tr" means table row */ }
 				<tr>
 					{// "th" is a table heading. they all have a scope="col", which is used primarily for Bootstrap. (it will basically <strong> it)
@@ -52,7 +51,9 @@ function Dashboard({ date }, reservations, tables, reservationsError, tablesErro
 					<th scope="col">Time</th>
 					<th scope="col">People</th>
 					<th scope="col">Status</th>
-					<th scope="col">Seat Table</th>
+					<th scope="col">Edit</th>
+					<th scope="col">Cancel</th>
+					<th scope="col">Seat</th>
 				</tr>
 			</thead>
 			
@@ -67,13 +68,14 @@ function Dashboard({ date }, reservations, tables, reservationsError, tablesErro
 
 		<ErrorAlert error={tablesError} />
 
-		<table class="table">
-			<thead>
+		<table className="table">
+			<thead className="thead-light">
 				<tr>
 					<th scope="col">ID</th>
 					<th scope="col">Table Name</th>
 					<th scope="col">Capacity</th>
 					<th scope="col">Status</th>
+					<th scope="col">Finish</th>
 				</tr>
 			</thead>
 				
