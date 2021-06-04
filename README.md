@@ -1,37 +1,35 @@
-## Basic Installation 
+## Installation
+
 1. Fork and clone this repository.
-1. Run `cp ./back-end/.env.sample ./back-end/.env`.
-1. Update the `./back-end/.env` file with the connection URL's to your  database instance.
-1. Run `cp ./front-end/.env.sample ./front-end/.env`.
-1. You should not need to make changes to the `./front-end/.env` file unless you want to connect to a backend at a location other than `http://localhost:5000`.
-1. Run `npm install` to install project dependencies.
-1. Run `npm run start:dev` to start your server in development mode. to run the application locally.
-
-## Existing files
-
-This repository is set up as a *monorepo*, meaning that the frontend and backend projects are in one repository. This allows you to open both projects in the same editor.
-
-As you work through the user stories listed later in this document, you will be writing code that allows your frontend and backend applications to talk to each other. You will also write code to allow your controllers and services to connect to, and query, your PostgreSQL database via [Knex](http://knexjs.org/).
-
-The table below describes the folders in this starter repository:
-
-| Folder/file path | Description                                                      |
-| ---------------- | ---------------------------------------------------------------- |
-| `./back-end`     | The backend project, which runs on `localhost:5000` by default.  |
-| `./front-end`    | The frontend project, which runs on `localhost:3000` by default. |
-
-
+2. Run `npm install` to install project dependencies.
+3. Create a `.env` file in the `backend` directory.
+4. Modify `.env` with the following:</br>
+   <code>
+   &nbsp;DATABASE*URL=\_productionURL*</br>
+   &nbsp;DATABASE*URL_DEVELOPMENT=\_developmentURL*</br>
+   &nbsp;DATABASE*URL_TEST=\_testURL*</br>
+   &nbsp;DATABASE*URL_PREVIEW=\_previewURL*</br>
+   &nbsp;LOG_LEVEL=info</br>
+   </code>
+5. Replace "productionURL" with the URL to your production database.
+6. Repeat step 5 for the remaining fields, but using the corresponding database URL.
+7. Create a `.env` file in the `frontend` directory.
+8. Modify `.env` with the following:</br>
+   <code>REACT_APP_API_BASE_URL=http://localhost:5000<br/></code>
+9. From inside the backend directory, run `npx knex migrate:latest`.
+10. Run `npx knex seed:run`.
+11. Finally, go back to the root of the main directory and run `npm run start:dev` to run the application locally.
 
 ## API
 
 | Endpoint                               | Method | Description                                                                                           |
 | -------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------- |
-| `/reservations`                        | GET    | Gets all of the reservations.  |
+| `/reservations`                        | GET    | Gets all of the reservations. If 'date' query parameter exists, then gets reservations for that date. |
 | `/reservations`                        | POST   | Creates a new reservation.                                                                            |
 | `/reservations/:reservation_id`        | GET    | Gets the reservation corresponding to 'reservation_id'.                                               |
 | `/reservations/:reservation_id`        | PUT    | Updates the reservation corresponding to 'reservation_id'.                                            |
 | `/reservations/:reservation_id/status` | PUT    | Updates the reservation status.                                                                       |
 | `/tables`                              | GET    | Gets all of the tables.                                                                               |
-| `/tables`                              | POST   | Creates a custom table.                                                                                      |
+| `/tables`                              | POST   | Creates a table.                                                                                      |
 | `/tables/:tableId/seat`                | PUT    | Assigns a reservation to a table.                                                                     |
-| `/tables/:tableId/seat`                | DELETE | Resets a table's availability for future reservations.                                                                |
+| `/tables/:tableId/seat`                | DELETE | Frees a table for future reservations.                                                                |
